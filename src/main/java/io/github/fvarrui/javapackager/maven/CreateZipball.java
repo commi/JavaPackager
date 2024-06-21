@@ -35,8 +35,10 @@ public class CreateZipball extends ArtifactGenerator<Packager> {
 	protected File doApply(Packager packager) {
 		
 		File assetsFolder = packager.getAssetsFolder();
+		String name = packager.getName();
+		String version = packager.getVersion();
 		Platform platform = packager.getPlatform();
-		File outputDirectory = packager.getOutputDirectory(); 
+		File outputDirectory = packager.getOutputDirectory();
 
 		try {
 
@@ -44,37 +46,34 @@ public class CreateZipball extends ArtifactGenerator<Packager> {
 			File assemblyFile = new File(assetsFolder, "assembly-zipball-" + platform + ".xml");
 			VelocityUtils.render(platform + "/assembly.xml.vtl", assemblyFile, packager);
 			
-			// zip file name and format
+			// output file format
 			String format = "zip";
-			
+
+			// the desired artifact name without extension
+			String finalName = packager.getZipballName() != null
+					? packager.getZipballName()
+					: name + "-" + version + "-" + platform;
+
 			// invokes plugin to assemble zipball and/or tarball
 			executeMojo(
 					plugin(
 							groupId("org.apache.maven.plugins"), 
 							artifactId("maven-assembly-plugin"), 
-							version("3.1.1")
+							version("3.7.1")
 					),
 					goal("single"),
 					configuration(
 							element("outputDirectory", outputDirectory.getAbsolutePath()),
 							element("formats", element("format", format)),
 							element("descriptors", element("descriptor", assemblyFile.getAbsolutePath())),
-							element("appendAssemblyId", "false")							
+							element("appendAssemblyId", "false"),
+							element("finalName", finalName)
 					),
 					Context.getMavenContext().getEnv()
 				);
 
-			// gets generated filename
-			String finalName = Context.getMavenContext().getEnv().getMavenProject().getBuild().getFinalName();
-			File finalFile = new File(outputDirectory, finalName + "." + format);
+			File zipFile = new File(outputDirectory, finalName + "." + format);
 
-			// gets desired file name
-			String zipName = packager.getZipballName() != null ? packager.getZipballName() : finalName + "-" + platform;
-			File zipFile = new File(outputDirectory, zipName + "." + format);
-			
-			// rename generated to desired
-			finalFile.renameTo(zipFile);
-			
 			return zipFile;
 			
 		} catch (Exception e) {

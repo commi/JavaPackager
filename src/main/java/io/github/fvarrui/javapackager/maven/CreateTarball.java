@@ -35,6 +35,8 @@ public class CreateTarball extends ArtifactGenerator<Packager> {
 	protected File doApply(Packager packager) {
 		
 		File assetsFolder = packager.getAssetsFolder();
+		String name = packager.getName();
+		String version = packager.getVersion();
 		Platform platform = packager.getPlatform();
 		File outputDirectory = packager.getOutputDirectory(); 
 
@@ -47,34 +49,31 @@ public class CreateTarball extends ArtifactGenerator<Packager> {
 			// output file format
 			String format = "tar.gz";
 			
+			// the desired artifact name without extension
+			String finalName = packager.getTarballName() != null
+					? packager.getTarballName()
+					: name + "-" + version + "-" + platform;
+
 			// invokes plugin to assemble tarball
 			executeMojo(
 					plugin(
 							groupId("org.apache.maven.plugins"), 
 							artifactId("maven-assembly-plugin"), 
-							version("3.1.1")
+							version("3.7.1")
 					),
 					goal("single"),
 					configuration(
 							element("outputDirectory", outputDirectory.getAbsolutePath()),
 							element("formats", element("format", format)),
 							element("descriptors", element("descriptor", assemblyFile.getAbsolutePath())),
-							element("appendAssemblyId", "false")
+							element("appendAssemblyId", "false"),
+							element("finalName", finalName)
 					),
 					Context.getMavenContext().getEnv()
 				);
 
-			// get generated filename
-			String finalName = Context.getMavenContext().getEnv().getMavenProject().getBuild().getFinalName();
-			File finalFile = new File(outputDirectory, finalName + "." + format);
+			File tarFile = new File(outputDirectory, finalName + "." + format);
 
-			// get desired file name
-			String tarName = packager.getTarballName() != null ? packager.getTarballName() : finalName + "-" + platform;
-			File tarFile = new File(outputDirectory, tarName + "." + format);
-			
-			// rename generated to desired
-			finalFile.renameTo(tarFile);
-			
 			return tarFile;
 			
 		} catch (Exception e) {
