@@ -29,12 +29,30 @@ public enum Arch {
 	public static Arch getDefault() {
 		return getArch(SystemUtils.OS_ARCH);
 	}
+
+	public String toDebArchitecture() {
+		switch (this) {
+		case aarch64: return "arm64";
+		case x64: return "amd64";
+		case x86: return "i386";
+		default: return null;
+		}
+	}
 	
 	public Architecture toRpmArchitecture() {		
 		switch (this) {
 		case aarch64: return Architecture.AARCH64;
 		case x64: return Architecture.X86_64;
 		case x86: return Architecture.I386;
+		default: return null;
+		}
+	}
+
+	public String toMsiArchitecture() {
+		switch (this) {
+		case aarch64: return "arm64";
+		case x64: return "x64";
+		case x86: return "x86";
 		default: return null;
 		}
 	}

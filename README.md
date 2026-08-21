@@ -8,6 +8,14 @@ JavaPackager is a hybrid plugin for **Maven** and **Gradle** which provides an e
 > [!IMPORTANT] 
 > See [JavaPackager changes and fixes](https://github.com/fvarrui/JavaPackager/releases).
 
+## Project maintainers needed
+
+This project has been actively maintained for many years, but due to lack of time, I can no longer dedicate the attention it deserves. To keep it alive and evolving, I’m looking for contributors to help with its maintenance.  
+
+:point_right: **[Join the discussion](https://github.com/fvarrui/JavaPackager/discussions/460)**  
+
+Any help is welcome! Thank you for your support.
+
 ## History
 
 It was born while teaching to my students how to build and distribute their Java apps, and after seeing that a chain of several plugins was needed to achieve this task, I decided to develop a plugin :ring: to rule them all.
@@ -145,7 +153,7 @@ By default it will generate next artifacts in `${outputDirectory} ` folder:
 ### Plugin configuration properties
 
 | Property                   | Mandatory          | Default value                                                                                                                                      | Description                                                                                                                                                                               |
-| -------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|----------------------------|--------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `additionalModulePaths`    | :x:                | `[]`                                                                                                                                               | Additional module paths for `jdeps`.                                                                                                                                                      |
 | `additionalModules`        | :x:                | `[]`                                                                                                                                               | Additional modules to the ones identified by `jdeps` or the specified with `modules` property.                                                                                            |
 | `additionalResources`      | :x:                | `[]`                                                                                                                                               | Additional files and folders to include in the bundled app.                                                                                                                               |
@@ -186,6 +194,7 @@ By default it will generate next artifacts in `${outputDirectory} ` folder:
 | `useResourcesAsWorkingDir` | :x:                | `true`                                                                                                                                             | Uses app resources folder as default working directory (always `true` on MacOS).                                                                                                          |
 | `version`                  | :x:                | `${project.version}`                                                                                                                               | App version.                                                                                                                                                                              |
 | `vmArgs`                   | :x:                | `[]`                                                                                                                                               | VM arguments.                                                                                                                                                                             |
+| `appArgs`                  | :x:                | `[]`                                                                                                                                               | Additional arguments when launching the application.                                                                                                                                      |
 
 > [!IMPORTANT]
 > Some default values depends on the used building tool.

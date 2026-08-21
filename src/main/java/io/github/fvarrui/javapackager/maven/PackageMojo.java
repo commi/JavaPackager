@@ -1,7 +1,7 @@
 package io.github.fvarrui.javapackager.maven;
 
+import static org.apache.commons.lang3.ObjectUtils.getIfNull;
 import static org.apache.commons.lang3.StringUtils.defaultIfBlank;
-import static org.apache.commons.lang3.ObjectUtils.defaultIfNull;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
 
 import java.io.File;
@@ -199,6 +199,12 @@ public class PackageMojo extends AbstractMojo {
 	 */	
 	@Parameter(property = "vmArgs", required = false)
 	private List<String> vmArgs;
+
+	/**
+	 * Additional arguments to provide to the application
+	 */
+	@Parameter(property = "appArgs", readonly = false)
+	private List<String> appArgs;
 	
 	/**
 	 * Provide your own runnable .jar (for example, a shaded .jar) instead of letting this plugin create one via
@@ -346,7 +352,7 @@ public class PackageMojo extends AbstractMojo {
 						.additionalModulePaths(additionalModulePaths)
 						.additionalResources(additionalResources)
 						.administratorRequired(administratorRequired)
-						.arch(defaultIfNull(arch, Arch.getDefault()))
+						.arch(getIfNull(arch, Arch::getDefault))
 						.assetsDir(assetsDir)
 						.bundleJre(bundleJre)
 						.classpath(classpath)
@@ -387,6 +393,7 @@ public class PackageMojo extends AbstractMojo {
 						.url(url)
 						.version(version)
 						.vmArgs(vmArgs)
+						.appArgs(appArgs)
 						.winConfig(winConfig);
 			
 			// generate app, installers and bundles
@@ -397,11 +404,11 @@ public class PackageMojo extends AbstractMojo {
 		} catch (Exception e) {
 
 			throw new MojoExecutionException(e.getMessage(), e);
-			
+
 		}
 		
 
 	}
 
-	
+
 }
