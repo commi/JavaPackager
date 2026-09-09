@@ -66,6 +66,8 @@ public class PackagerSettings {
 	protected String jreMinVersion;
 	protected Manifest manifest;
 	protected List<File> additionalModulePaths;
+	protected String jlinkCompression;
+	protected List<String> additionalJlinkArgs;
 	protected List<FileAssociation> fileAssociations;
 	protected File packagingJdk;
 	protected Scripts scripts;
@@ -406,6 +408,22 @@ public class PackagerSettings {
 	 */
 	public List<File> getAdditionalModulePaths() {
 		return additionalModulePaths;
+	}
+
+	/**
+	 * Get jlink compression level
+	 * @return Compression level used by jlink
+	 */
+	public String getJlinkCompression() {
+		return jlinkCompression;
+	}
+
+	/**
+	 * Get additional jlink arguments
+	 * @return Additional jlink arguments
+	 */
+	public List<String> getAdditionalJlinkArgs() {
+		return additionalJlinkArgs;
 	}
 
 	/**
@@ -868,6 +886,26 @@ public class PackagerSettings {
 	}
 
 	/**
+	 * Set jlink compression level
+	 * @param jlinkCompression Compression level used by jlink
+	 * @return Packager settings
+	 */
+	public PackagerSettings jlinkCompression(String jlinkCompression) {
+		this.jlinkCompression = jlinkCompression;
+		return this;
+	}
+
+	/**
+	 * Set additional jlink arguments
+	 * @param additionalJlinkArgs Additional jlink arguments list
+	 * @return Packager settings
+	 */
+	public PackagerSettings additionalJlinkArgs(List<String> additionalJlinkArgs) {
+		this.additionalJlinkArgs = additionalJlinkArgs;
+		return this;
+	}
+
+	/**
 	 * Set file associations
 	 * @param fileAssociations File associations list
 	 * @return Packager settings
@@ -943,7 +981,8 @@ public class PackagerSettings {
 				+ ", createZipball=" + createZipball + ", zipballName=" + zipballName + ", extra=" + extra
 				+ ", useResourcesAsWorkingDir=" + useResourcesAsWorkingDir + ", assetsDir=" + assetsDir+ ", classpath="
 				+ classpath	+ ", jreMinVersion=" + jreMinVersion + ", manifest=" + manifest + ", additionalModulePaths="
-				+ additionalModulePaths + ", fileAssociations=" + fileAssociations + ", packagingJdk=" + packagingJdk
+				+ additionalModulePaths + ", jlinkCompression=" + jlinkCompression + ", additionalJlinkArgs="
+				+ additionalJlinkArgs + ", fileAssociations=" + fileAssociations + ", packagingJdk=" + packagingJdk
 				+ ", scripts=" + scripts + ", arch=" + arch + ", templates=" + templates + "]";
 	}
 	

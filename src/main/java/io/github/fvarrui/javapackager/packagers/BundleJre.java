@@ -49,6 +49,8 @@ public class BundleJre extends ArtifactGenerator<Packager> {
 		List<String> requiredModules = packager.getModules();
 		List<String> additionalModules = packager.getAdditionalModules();
 		List<File> additionalModulePaths = packager.getAdditionalModulePaths();
+		String jlinkCompression = packager.getJlinkCompression();
+		List<String> additionalJlinkArgs = packager.getAdditionalJlinkArgs();
 		File currentJdk = packager.getPackagingJdk();
 		
 		Logger.infoIndent("Bundling JRE ... with " + currentJdk);
@@ -159,7 +161,8 @@ public class BundleJre extends ArtifactGenerator<Packager> {
 					"--no-man-pages", 
 					"--strip-debug",
 					"--release-info", releaseInfo, 
-					(VersionUtils.getJavaMajorVersion() < 21 ? "--compress=2" : null)
+					getCompressionArg(jlinkCompression),
+					additionalJlinkArgs
 				);
 	
 			// sets execution permissions on executables in jre
@@ -193,6 +196,20 @@ public class BundleJre extends ArtifactGenerator<Packager> {
 		return destinationFolder;
 	}
 	
+	/**
+	 * Builds the jlink compression argument
+	 *
+	 * @param jlinkCompression compression level specified by the user, or null to use the default one
+	 * @return jlink --compress argument, or null if no compression has to be requested
+	 */
+	private String getCompressionArg(String jlinkCompression) {
+		if (StringUtils.isNotBlank(jlinkCompression)) {
+			return "--compress=" + jlinkCompression;
+		}
+		// since JDK 21 jlink compresses the image by default
+		return VersionUtils.getJavaMajorVersion() < 21 ? "--compress=2" : null;
+	}
+
 	/**
 	 * Uses jdeps command tool to determine which modules all used jar files depend on
 	 * 

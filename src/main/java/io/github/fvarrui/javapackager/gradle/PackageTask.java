@@ -547,6 +547,30 @@ public class PackageTask extends AbstractPackageTask {
 
 	@Input
 	@Optional
+	private String jlinkCompression;
+
+	public String getJlinkCompression() {
+		return jlinkCompression;
+	}
+
+	public void setJlinkCompression(String jlinkCompression) {
+		this.jlinkCompression = jlinkCompression;
+	}
+
+	@Input
+	@Optional
+	private List<String> additionalJlinkArgs;
+
+	public List<String> getAdditionalJlinkArgs() {
+		return additionalJlinkArgs;
+	}
+
+	public void setAdditionalJlinkArgs(List<String> additionalJlinkArgs) {
+		this.additionalJlinkArgs = additionalJlinkArgs;
+	}
+
+	@Input
+	@Optional
 	private List<FileAssociation> fileAssociations;
 	
 	public List<FileAssociation> getFileAssociations() {
@@ -626,6 +650,7 @@ public class PackageTask extends AbstractPackageTask {
 		return
 			(Packager) PackagerFactory
 				.createPackager(defaultIfNull(platform, extension.getPlatform()))
+					.additionalJlinkArgs(defaultIfNull(additionalJlinkArgs, extension.getAdditionalJlinkArgs()))
 					.additionalModules(defaultIfNull(additionalModules, extension.getAdditionalModules()))
 					.additionalModulePaths(defaultIfNull(additionalModulePaths, extension.getAdditionalModulePaths()))
 					.additionalResources(defaultIfNull(additionalResources, extension.getAdditionalResources()))
@@ -646,6 +671,7 @@ public class PackageTask extends AbstractPackageTask {
 					.forceInstaller(defaultIfNull(forceInstaller, extension.isForceInstaller()))					
 					.generateInstaller(defaultIfNull(generateInstaller, extension.getGenerateInstaller()))
 					.jdkPath(defaultIfNull(jdkPath, extension.getJdkPath()))
+					.jlinkCompression(defaultIfBlank(jlinkCompression, extension.getJlinkCompression()))
 					.jreDirectoryName(defaultIfBlank(jreDirectoryName, extension.getJreDirectoryName()))
 					.jreMinVersion(defaultIfBlank(jreMinVersion, extension.getJreMinVersion()))
 					.jrePath(defaultIfNull(jrePath, extension.getJrePath()))

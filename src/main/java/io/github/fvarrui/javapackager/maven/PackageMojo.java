@@ -303,7 +303,19 @@ public class PackageMojo extends AbstractMojo {
 	 */
 	@Parameter(property = "additionalModulePaths", required = false)
 	private List<File> additionalModulePaths;
-	
+
+	/**
+	 * Compression level used by jlink when generating a customized JRE
+	 */
+	@Parameter(property = "jlinkCompression", required = false)
+	private String jlinkCompression;
+
+	/**
+	 * Additional arguments passed to jlink when generating a customized JRE
+	 */
+	@Parameter(property = "additionalJlinkArgs", required = false)
+	private List<String> additionalJlinkArgs;
+
 	/**
 	 * Packaging JDK
 	 */
@@ -348,6 +360,7 @@ public class PackageMojo extends AbstractMojo {
 			Packager packager = 
 				(Packager) PackagerFactory
 					.createPackager(platform)
+						.additionalJlinkArgs(additionalJlinkArgs)
 						.additionalModules(additionalModules)
 						.additionalModulePaths(additionalModulePaths)
 						.additionalResources(additionalResources)
@@ -371,6 +384,7 @@ public class PackageMojo extends AbstractMojo {
 						.generateInstaller(generateInstaller)
 						.iconFile(iconFile)
 						.jdkPath(jdkPath)
+						.jlinkCompression(jlinkCompression)
 						.jreDirectoryName(jreDirectoryName)
 						.jreMinVersion(jreMinVersion)
 						.jrePath(jrePath)
